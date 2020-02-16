@@ -1,0 +1,160 @@
+Scrapy Architecture - Components
+
+1. Spiders - Extract from websites, 
+	Scrapy.spider, CrawlSpider, XMLFeedSpider, CSVFeedSpider, SitemapSpider 
+2. Pipelines - Related to Data
+	Cleaning, Remove duplicates, Storing data
+3. Middlewares - Request and Response from websites (Spider Middleware and Downloader Middleware)
+	Injecting custom headers, Proxying
+4. Engine - Consistancy of all operations to be happen
+5. Scheduler - Reserving the order of operations
+	Data Structure - Queue FIFO
+-----------------------------------------------------------------------------------
+Anaconda Navigator
+
+1. Download Anaconda Navigator from https://anaconda.org/ website
+
+2. After Installing open Anaconda Navigator
+
+3. Then Create a virtual environment eg: virtual_space
+
+4. Open Terminal and excecute below command
+
+	conda install scrapy==1.6 pylint autopep8 -y
+
+5. Install and Open VS Code from Anaconda Navigator
+7. Open Command terminal from Anaconda Navigator
+	scrapy bench
+	scrapy fetch http://google.com
+--------------------------------------------------------------------------------------
+Creating New Project
+
+1. Create New Projects - in Terminal
+2. Excecute following commands
+	mkdir projects
+	cd projects
+		scrapy startproject wordometers
+		cd wordometers
+		scrapy genspider countries www.worldometers.info/world-population/population-by-country/
+		conda install ipython
+
+Instalation proceed press Y
+
+		scrapy shell
+		fetch("https://www.worldometers.info/world-population/population-by-country/")
+		r = scrapy.Request(url="https://www.worldometers.info/world-population/population-by-country/")
+		fetch(r)
+		response.body
+		view(response)
+
+3. Open this webpage in browser 
+	https://www.worldometers.info/world-population/population-by-country/
+4. Go to inspect element - Cntrl + Shift + I
+5. Select an Element in the page  - Cntrl + Shift + I
+6. Select Element Tab then press  - Cntrl + F to find by tag name for eg: //h1, it will highlingt how many times they used that tag in yellow color.
+
+7. Open Terminal and enter commands
+	title = response.xpath("//h1")
+	title
+	title = response.xpath("//h1/text()")
+	title
+	title.get()
+	title_css = response.css("h1::text")
+	title_css
+	title_css.get()
+	countries = response.xpath("//td/a/text()").getall()
+	countries
+	countries_css = response.css("td a::text").getall()
+	countries_css
+
+8. Go to VS Code install extension python
+9. Open the project folder 
+	Open countries.py file from scrapy folder
+	Edit Function like this
+	
+	def parse(self, response):
+         title = response.xpath("//h1/text()").get
+         countries = response.xpath("//td/a/text()").getall() 
+
+         yield{
+             'title' : title,
+             'countries': countries
+         }
+
+10. Then open new Command Terminal from Anaconda Navigator->projects/wordometers
+	cd projects
+	cd wordometers
+	scrapy crawl countries
+11. Same way we can use VS Code to run this commands
+	Open Terminal -> View -> Terminal in VS Code
+	Add + a terminal and type this command 
+		scrapy crawl countries
+---------------------------------------------------------
+XPath Selection Examples
+
+//h1
+//div[@class='intro']
+//div[@class='intro']/p
+//div[@class='intro' or @class='outro']/p
+//div[@class='intro' or @class='outro']/p/text()
+//a/@href
+//a[starts-with(@href, 'https')]
+//a[ends-with(@href, 'fr')]
+//a[contains(@href, 'google')]
+//a[contains(text(), 'France')]
+//ul[@id='items']/li
+//ul[@id='items']/li[1 or 4]
+//ul[@id='items']/li[position()=1 or position()=4]
+//ul[@id='items']/li[position()>1]
+//p[@id='unique']/parent::div
+//p[@id='unique']/parent::node()
+//p[@id='unique']/ancestor::node()
+//p[@id='unique']/ancestor-or-self::node()
+//p[@id='unique']/preceding::node()
+//p[@id='unique']/preceding::h1
+//p[@id='outside']/preceding-sibling::node()
+//div[@class='intro']/child::node()
+//div[@class='intro']/following::node()
+//div[@class='intro']/following-sibling::node()
+//div[@class='intro']/descendant::node()
+---------------------------------------------------------------
+Using xpath in VS Code (Alt + Shift + Down Arrow for copy and paste)
+
+class CountriesSpider(scrapy.Spider):
+    name = 'countries'
+    allowed_domains = ['www.worldometers.info/']
+    start_urls = ['https://www.worldometers.info/world-population/population-by-country/']
+
+    def parse(self, response):
+        countries = response.xpath("//td/a")
+        for country in countries:
+            name = country.xpath(".//text()").get()
+            link = country.xpath(".//@href").get()
+            yield {
+                'country_name' : name,
+                'country_link' : link
+            }
+----------------------------------------------------------------
+Install ChroPath or XPathHelper chrome extention to find xpath more easy
+1. ChroPath - Right click element - Go to Chropath tab Copy RelXPath
+2. XPathHelper - Click the XPathHelper icon right click element the hold shit key to get the xpath
+----------------------------------------------------------------
+
+Output data to Json, CSV and XML using these command ( Alt + Shift + F for formating data) 
+	scrapy crawl countries -o population_dataset.json
+	scrapy crawl countries -o population_dataset.csv
+	scrapy crawl countries -o population_dataset.xml
+
+--------------------------------------------------------------------
+Encoding scrapy data to utf-8
+1. Open settings.py
+	add following code at the end
+		FEED_EXPORT_ENCODING = 'utf-8'
+-------------------------------------------------------------------
+Dealing with Pagination
+
+
+
+
+
+
