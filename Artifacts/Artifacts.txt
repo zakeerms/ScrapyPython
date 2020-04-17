@@ -69,6 +69,7 @@ Instalation proceed press Y
 
 8. Go to VS Code install extension python
 9. Open the project folder 
+	Note : For activating conda in VS Code go to this link and do the steps https://medium.com/@udiyosovzon/how-to-activate-conda-environment-in-vs-code-ce599497f20d
 	Open countries.py file from scrapy folder
 	Edit Function like this
 	
@@ -154,7 +155,34 @@ Encoding scrapy data to utf-8
 Dealing with Pagination
 
 
+---------------------------------------------------------------------
+Project Autotrader.com
 
+1. Check Robots.txt file https://www.autotrader.com/robots.txt
+2. Then Open the page and Press Cntrl + Shift + I then Cntrl + Shift + I then type JavaScript then Click Disable Javascript
+3. Open Anaconda Navigator - > Initialize Virtual_workspace, Open Command Terminal
+3. Navigate to project folder
+4. Type command ->
+	scrapy startproject autotrader
+	cd autotrader
+	scrapy genspider carforsale www.autotrader.com/cars-for-sale/Used+Cars/BMW/Grand+Prairie+TX-75052
+
+
+[Note : For activating conda in VS Code go to this link and do the steps https://medium.com/@udiyosovzon/how-to-activate-conda-environment-in-vs-code-ce599497f20d   ]
+[Select Format Document in VS Code ( Alt + Shift + F , or Alt + Shift + I on Linux) from the menu box.]
+[Stopping Crwling in terminal - Cntrl + C]
+[Scrapy 404 error: HTTP status code is not handled or not allowed
+Fix:- User Agent Configuration
+
+Changed USER_AGENT in setting.py
+
+	USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.131 Safari/537.36"
+]
+
+[For accessing web information 
+
+AUTOTHROTTLE_ENABLED = True
+]
 
 
 
